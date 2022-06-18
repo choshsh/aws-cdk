@@ -30,6 +30,9 @@ export class Ec2CdkStack extends cdk.Stack {
         "EC2InstanceProfileForImageBuilderECRContainerBuilds"
       )
     );
+    role.addManagedPolicy(
+      iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonSSMManagedInstanceCore")
+    );
 
     // Use Latest Amazon Linux Image - CPU Type X86_64
     const ami = new ec2.AmazonLinuxImage({

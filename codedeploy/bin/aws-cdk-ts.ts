@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import * as cdk from "aws-cdk-lib";
-import { Ec2CdkStack } from "../lib/aws-cdk-ts-stack";
+import { CodedeployCdkStack } from "../lib/aws-codedeploy-stack";
 import { config } from "dotenv";
 
 // 환경변수 (.env)
@@ -12,11 +12,13 @@ const env = {
   region: process.env.CDK_DEPLOY_REGION || process.env.CDK_DEFAULT_REGION,
 };
 
-// Create EC2
-new Ec2CdkStack(app, "Ec2CdkStack", {
+// Create codedeploy - application, deployment group
+new CodedeployCdkStack(app, "CodedeployCdkStack", {
+  applicationName: "test",
+  deploymentGroupName: "dev",
+  instanceTagSet: new cdk.aws_codedeploy.InstanceTagSet({
+    stage: ["dev"],
+    service: ["test"],
+  }),
   env: env,
-  tags: {
-    stage: "dev",
-    service: "test",
-  },
 });
