@@ -65,7 +65,7 @@ runcmd:
             {
               "file_path": "/home/ec2-user/app/**.log",
               "log_group_name": "/polarishare/backend",
-              "log_stream_name": "{date}-{instance_id}",
+              "log_stream_name": "{date}/{instance_id}",
               "timezone": "UTC"
             }
           ]
