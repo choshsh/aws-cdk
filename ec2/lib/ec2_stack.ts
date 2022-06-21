@@ -33,6 +33,9 @@ export class Ec2CdkStack extends cdk.Stack {
     role.addManagedPolicy(
       iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonSSMManagedInstanceCore")
     );
+    role.addManagedPolicy(
+      iam.ManagedPolicy.fromAwsManagedPolicyName("CloudWatchAgentServerPolicy")
+    );
 
     // Use Latest Amazon Linux Image - CPU Type X86_64
     const ami = new ec2.AmazonLinuxImage({
@@ -41,11 +44,11 @@ export class Ec2CdkStack extends cdk.Stack {
     });
 
     // Create the instance using the Security Group, AMI, and KeyPair defined in the VPC created
-    const userDataScript = readFileSync("./lib/user-data.sh", "utf8");
+    const userDataScript = readFileSync("./lib/backend-userdata.sh", "utf8");
     const ec2Instance = new ec2.Instance(this, "Instance", {
       vpc,
       instanceType: ec2.InstanceType.of(
-        ec2.InstanceClass.T2,
+        ec2.InstanceClass.T3,
         ec2.InstanceSize.MICRO
       ),
       machineImage: ami,
@@ -53,6 +56,7 @@ export class Ec2CdkStack extends cdk.Stack {
       role: role,
       keyName: "MyKeyPair",
       userData: ec2.UserData.custom(userDataScript),
+      userDataCausesReplacement: true,
     });
 
     // Create outputs for connecting

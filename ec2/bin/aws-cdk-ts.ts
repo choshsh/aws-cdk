@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import * as cdk from "aws-cdk-lib";
-import { Ec2CdkStack } from "../lib/aws-cdk-ts-stack";
+import { Ec2CdkStack } from "../lib/ec2_stack";
 import { config } from "dotenv";
 
 // 환경변수 (.env)
